@@ -10,8 +10,8 @@ import (
 	"os"
 	"os/signal"
 
-	"continuul.io/disco-http/http"
-	"continuul.io/disco-http/store"
+	"continuul.io/raft-http/http"
+	"continuul.io/raft-http/store"
 )
 
 // Command line defaults

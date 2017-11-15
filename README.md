@@ -1,6 +1,6 @@
-# disco-http
+# raft-http
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/continuul/disco-http)](https://goreportcard.com/report/github.com/continuul/disco-http)
+[![Go Report Card](https://goreportcard.com/badge/github.com/continuul/raft-http)](https://goreportcard.com/report/github.com/continuul/raft-http)
 
 A simple demonstration of Hashicorp Serf and Raft libraries to illustrate
 a peer-to-peer Raft-based network of nodes that self-heal, and perform
@@ -13,7 +13,7 @@ state of some arbitrary state machine, even when nodes are vulnerable to
 failure and network partitions. Distributed consensus is a fundamental
 concept when it comes to building fault-tolerant systems.
 
-A simple example system like disco-http makes it easy to study the Raft
+A simple example system like raft-http makes it easy to study the Raft
 consensus protocol in general, and Hashicorp's Raft implementation in particular.
 
 ## Reading and writing keys
@@ -31,24 +31,24 @@ You can read the value for a key like so:
 curl -XGET localhost:11000/key/foo
 ```
 
-## Building disco-http
+## Building raft-http
 
-Starting and running a disco-http cluster is easy. Download disco-http like so:
+Starting and running a raft-http cluster is easy. Download raft-http like so:
 
 ```bash
 mkdir demos
 cd demos/
 export GOPATH=$PWD
-go get continuul.io/disco-http
+go get continuul.io/raft-http
 ```
 
-## Running disco-http
+## Running raft-http
 
-Building disco-http requires Go 1.9 or later.
+Building raft-http requires Go 1.9 or later.
 
-Run your first disco-http node like so:
+Run your first raft-http node like so:
 ```bash
-disco-http -id node0 /tmp/node0
+raft-http -id node0 /tmp/node0
 ```
 
 You can now set a key and read its value back:
@@ -63,10 +63,10 @@ _A walkthrough of setting up a more realistic cluster is [here](CLUSTERING.md)._
 
 Let's bring up 2 more nodes, so we have a 3-node cluster. That way we can tolerate the failure of 1 node:
 ```bash
-disco-http -id node1 -client :11001 -bind :12001 -join :11000 /tmp/node1
-disco-http -id node2 -client :11002 -bind :12002 -join :11000 /tmp/node2
+raft-http -id node1 -client :11001 -bind :12001 -join :11000 /tmp/node1
+raft-http -id node2 -client :11002 -bind :12002 -join :11000 /tmp/node2
 ```
-_This example shows each disco-http node running on the same host, so each node must listen on different ports. This would not be necessary if each node ran on a different host._
+_This example shows each raft-http node running on the same host, so each node must listen on different ports. This would not be necessary if each node ran on a different host._
 
 This tells each new node to join the existing node. Once joined, each node now knows
 about the key:
@@ -91,14 +91,14 @@ curl -XGET localhost:11002/key/user2
 #### Stale reads
 
 Because any node will answer a GET request, and nodes may "fall behind"
-updates, stale reads are possible. Again, disco-http is a simple program,
+updates, stale reads are possible. Again, raft-http is a simple program,
 for the purpose of demonstrating a distributed key-value store. If you
 are particularly interested in learning more about issue, you should
 check out [rqlite](https://github.com/rqlite/rqlite). rqlite allows the
 client to control [read consistency](https://github.com/rqlite/rqlite/blob/master/doc/CONSISTENCY.md),
 allowing the client to trade off read-responsiveness and correctness.
 
-Read-consistency support could be ported to disco-http if necessary.
+Read-consistency support could be ported to raft-http if necessary.
 
 ### Tolerating failure
 
